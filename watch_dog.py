@@ -25,31 +25,27 @@ class WatchDog(object):
 
     def device_status_check(self):
         """"设备状态检测"""
-        #沉睡时间
-        t = 30
         dev = self.dev.get_device_check()
+
         status_list = []
         for i in dev['items']:
             r = ping(i['ip'])
             status_list.append({'ip': i['ip'], 'status': r})
             print '{0} {1} {2}'.format(str(arrow.now()), i['ip'], r)
             logger.info('{0} {1}'.format(i['ip'], r))
-            if not r:
-                t = 5
-                break
+
         if len(status_list) == 0:
-            return t
+            return
         self.dev.set_device(status_list)
-        return t
 
     def run(self):
         while 1:
             try:
-                r = self.device_status_check()
-                time.sleep(r)
+                self.device_status_check()
+                time.sleep(5)
             except Exception as e:
                 print e
-                logger.exception(e)
+                logger.error(e)
                 time.sleep(10)
             finally:
                 time.sleep(1)
