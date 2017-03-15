@@ -15,9 +15,12 @@ class Device(object):
 
 	self.status = False
 
+	self.base_path = 'connectServer/'
+
     def get_device_list(self, timeout=15):
 	"""获取设备信息列表"""
-        url = 'http://{0}:{1}/device'.format(self.host, self.port)
+        url = 'http://{0}:{1}/{2}device'.format(
+            self.host, self.port, self.base_path)
         try:
             r = requests.get(url, headers=self.headers, timeout=timeout)
             if r.status_code == 200:
@@ -32,7 +35,8 @@ class Device(object):
 
     def get_device_by_ip(self, ip, timeout=15):
         """根据ip获取设备信息"""
-        url = 'http://{0}:{1}/device/{2}'.format(self.host, self.port, ip)
+        url = 'http://{0}:{1}/{2}device/{3}'.format(
+            self.host, self.port, self.base_path, ip)
         try:
             r = requests.get(url, headers=self.headers, timeout=timeout)
             if r.status_code == 200:
@@ -45,9 +49,10 @@ class Device(object):
             self.status = False
             raise
 
-    def get_device_check(self, timeout=15):
+    def get_device_check(self, num=10, timeout=15):
         """获取设备信息"""
-        url = 'http://{0}:{1}/device_check'.format(self.host, self.port)
+        url = 'http://{0}:{1}/{2}device_check/{3}'.format(
+            self.host, self.port, self.base_path, num)
         try:
             r = requests.get(url, headers=self.headers, timeout=timeout)
             if r.status_code == 200:
@@ -62,7 +67,8 @@ class Device(object):
 
     def set_device(self, data, timeout=15):
         """设置设备状态信息"""
-        url = 'http://{0}:{1}/device'.format(self.host, self.port)
+        url = 'http://{0}:{1}/{2}device'.format(
+            self.host, self.port, self.base_path)
         try:
             d = {'info': data}
             r = requests.post(url, headers=self.headers, data=json.dumps(d))
