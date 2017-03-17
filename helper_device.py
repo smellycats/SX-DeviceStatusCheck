@@ -9,18 +9,21 @@ class Device(object):
     def __init__(self, **kwargs):
         self.host = kwargs['host']
         self.port = kwargs['port']
-	#self.username = kwargs['username']
-	#self.password = kwargs['password']
+
         self.headers = {'content-type': 'application/json'}
 
 	self.status = False
 
 	self.base_path = 'connectServer/'
 
-    def get_device_list(self, timeout=15):
+    def get_device_list(self, type=None, timeout=15):
 	"""获取设备信息列表"""
-        url = 'http://{0}:{1}/{2}device'.format(
-            self.host, self.port, self.base_path)
+	if type is None:
+            url = 'http://{0}:{1}/{2}device'.format(
+                self.host, self.port, self.base_path)
+        else:
+            url = 'http://{0}:{1}/{2}device?type={3}'.format(
+                self.host, self.port, self.base_path, type)
         try:
             r = requests.get(url, headers=self.headers, timeout=timeout)
             if r.status_code == 200:
@@ -49,10 +52,14 @@ class Device(object):
             self.status = False
             raise
 
-    def get_device_check(self, num=10, timeout=15):
+    def get_device_check(self, num=10, type=None, timeout=15):
         """获取设备信息"""
-        url = 'http://{0}:{1}/{2}device_check/{3}'.format(
-            self.host, self.port, self.base_path, num)
+        if type is None:
+            url = 'http://{0}:{1}/{2}device_check/{3}'.format(
+                self.host, self.port, self.base_path, num)
+        else:
+            url = 'http://{0}:{1}/{2}device_check/{3}?type={4}'.format(
+                self.host, self.port, self.base_path, num, type)
         try:
             r = requests.get(url, headers=self.headers, timeout=timeout)
             if r.status_code == 200:
@@ -70,8 +77,8 @@ class Device(object):
         url = 'http://{0}:{1}/{2}device'.format(
             self.host, self.port, self.base_path)
         try:
-            d = {'info': data}
-            r = requests.post(url, headers=self.headers, data=json.dumps(d))
+            r = requests.post(url, headers=self.headers,
+                              data=json.dumps({'info': data}))
             if r.status_code == 201:
                 return json.loads(r.text)
             else:
