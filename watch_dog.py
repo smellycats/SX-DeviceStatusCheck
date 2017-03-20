@@ -22,7 +22,7 @@ class WatchDog(object):
         self.my_ini = MyIni()
         # 设备状态实例
         self.dev = Device(**self.my_ini.get_device())
-        self.dev.base_path = ''
+        self.dev.base_path = 'connectServer/'
         # 进程池
         self.pool = mul.Pool(8)
         # 循环检测次数
