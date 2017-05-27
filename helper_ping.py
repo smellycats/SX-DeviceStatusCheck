@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import socket
 import os
 import platform
 
@@ -27,3 +28,12 @@ def ping(ip_str):
             flag = True
             break
     return flag
+
+
+def check_server(address, port):
+    client = socket.socket()
+    try:
+        client.connect((address,port))
+        return True
+    except socket.error,e:
+        return False
