@@ -1,1 +1,1 @@
-python pyinstaller.py -D -n SX-DeviceStatusCheck --icon=C:\Users\wen\Documents\GitHub\SX-DeviceStatusCheck\icons\logo.ico C:\Users\wen\Documents\GitHub\SX-DeviceStatusCheck\run.py
+pyinstaller -D -n SX-DeviceStatusCheck --icon=C:\Users\wen\Documents\GitHub\SX-DeviceStatusCheck\icons\logo.ico C:\Users\wen\Documents\GitHub\SX-DeviceStatusCheck\run.py
